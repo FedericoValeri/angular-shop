@@ -12,13 +12,15 @@ import {
 import { AppComponent } from './app.component';
 import { ProductCreateComponent } from './products/product-create/product-create.component';
 import { HeaderComponent } from './header/header.component';
+import { ProductListComponent } from './products/product-list/product-list.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    HeaderComponent,
     ProductCreateComponent,
-    HeaderComponent
+    ProductListComponent
   ],
   imports: [
     BrowserModule,
