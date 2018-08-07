@@ -1,9 +1,18 @@
 <mat-card>
-    <mat-form-field>
-        <input matInput type="text" [(ngModel)]="enteredTitle">
-    </mat-form-field>
-    <mat-form-field>
-        <textarea matInput rows="6" [(ngModel)]="enteredDescription" ]></textarea>
-    </mat-form-field>
-    <button mat-raised-button color="accent" (click)="onAddProduct()">Crea Prodotto</button>
+    <form (submit)="onAddProduct(productForm)" #productForm="ngForm">
+        <mat-form-field>
+            <input required matInput type="text" name="title" ngModel placeholder="Nome prodotto" #title="ngModel">
+            <mat-error *ngIf="title.invalid">Inserisci il nome del prodotto!</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input required matInput type="number" name="price" ngModel placeholder="Prezzo prodotto" class="priceInput" #price="ngModel">
+            <mat-error *ngIf="price.invalid">Inserisci il prezzo del prodotto!</mat-error>
+            <span matPrefix>€&nbsp;</span>
+        </mat-form-field>
+        <mat-form-field>
+            <textarea required matInput rows="4" name="description" ngModel placeholder="Descrizione prodotto" #description="ngModel"></textarea>
+            <mat-error *ngIf="description.invalid">Inserisci la descrizione del prodotto!</mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="accent" type="submit">Crea Prodotto</button>
+    </form>
 </mat-card>

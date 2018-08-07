@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 import { Product } from '../product.model';
 
@@ -11,13 +12,16 @@ export class ProductCreateComponent {
   enteredTitle = '';
   enteredDescription = '';
   enteredPrice = null;
-  @Output() productCreated = new EventEmitter();
+  @Output() productCreated = new EventEmitter<Product>();
 
-  onAddProduct() {
+  onAddProduct(form: NgForm) {
+    if (form.invalid) {
+      return;
+    }
     const product: Product = {
-      title: this.enteredTitle,
-      price: this.enteredPrice,
-      description: this.enteredDescription
+      title: form.value.title,
+      price: form.value.price,
+      description: form.value.description
     };
     this.productCreated.emit(product);
   }

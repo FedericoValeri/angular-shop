@@ -3,7 +3,7 @@
         <img mat-card-image src="" alt="Product Image">
         <mat-card-header>
             <mat-card-title>{{ product.title }}</mat-card-title>
-            <mat-card-subtitle>{{ product.price }}</mat-card-subtitle>
+            <mat-card-subtitle>{{ product.price }} €</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
             <p>
@@ -15,4 +15,4 @@
         </mat-card-actions>
     </mat-card>
 </div>
-<p class="info-text mat-body-1" *ngIf="products.length <= 0">Nessun prodotto presente nel negozio</p>
+<p class="info-text mat-body-1" *ngIf="products.length <= 0">Nessun prodotto presente nel negozio di Rick</p>
