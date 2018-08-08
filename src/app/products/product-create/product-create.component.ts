@@ -20,5 +20,6 @@ export class ProductCreateComponent {
       return;
     }
     this.productsService.addProduct(form.value.title, form.value.price, form.value.description);
+    form.resetForm();
   }
 }
