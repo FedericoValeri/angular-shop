@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { Product } from './product.model';
 
@@ -13,11 +14,21 @@ export class ProductsService {
 
   getProducts() {
     this.http
-      .get<{ message: string; products: Product[] }>(
+      .get<{ message: string; products: any }>(
         'http://localhost:3000/api/products'
       )
-      .subscribe(productData => {
-        this.products = productData.products;
+      .pipe(map((productData) => {
+       return productData.products.map(product => {
+         return {
+           title: product.title,
+           price: product.price,
+           description: product.description,
+           id: product._id
+         };
+       });
+      }))
+      .subscribe(transformedProducts => {
+        this.products = transformedProducts;
         this.productsUpdated.next([...this.products]);
       });
   }
