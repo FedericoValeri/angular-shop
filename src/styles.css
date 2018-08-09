@@ -8,4 +8,6 @@ body {
 body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
+    background-image: url("https://images5.alphacoders.com/876/thumb-1920-876590.png");
+    /*background-color: rgb(151, 231, 255);*/
 }
