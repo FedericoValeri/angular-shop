@@ -31,6 +31,12 @@ app.post('/api/products', (req, res, next) => {
 });
 
 app.get('/api/products', (req, res, next) => {
+    const products = [{
+        id: 'dsgfewrehe',
+        title: 'Product',
+        price: 100,
+        description: 'description'
+    }];
     res.status(200).json({
         message: 'Products fetched succesfully!',
         products: products
