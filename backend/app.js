@@ -1,7 +1,20 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
+const Product = require('./models/product');
 
 const app = express();
+
+mongoose.connect('mongodb+srv://fede:le7cxZJxbrvq9Voh@database-zizqm.mongodb.net/rick-shop?retryWrites=true', {
+        useNewUrlParser: true
+    })
+    .then(() => {
+        console.log('Connected to database!');
+    })
+    .catch(() => {
+        console.log('Connection failed!');
+    });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -23,24 +36,25 @@ app.use((req, res, next) => {
 
 
 app.post('/api/products', (req, res, next) => {
-    const product = req.body;
-    console.log(product);
+    const product = new Product({
+        title: req.body.title,
+        price: req.body.price,
+        description: req.body.description
+    });
+    product.save();
     res.status(201).json({
         message: 'Post added succesfully'
     });
 });
 
 app.get('/api/products', (req, res, next) => {
-    const products = [{
-        id: 'dsgfewrehe',
-        title: 'Product',
-        price: 100,
-        description: 'description'
-    }];
-    res.status(200).json({
-        message: 'Products fetched succesfully!',
-        products: products
-    });
+    Product.find()
+        .then((documents) => {
+            res.status(200).json({
+                message: 'Products fetched succesfully!',
+                products: documents
+            });
+        });
 });
 
 module.exports = app;
