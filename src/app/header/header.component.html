@@ -1,5 +1,12 @@
 <mat-toolbar color="primary">
-    <img src="https://static1.squarespace.com/static/528252b7e4b00150d03a4848/59a2354eebbd1a0623e0cefe/59a2359f6a49631dd5192339/1503802789674/RickAndMorty_RickHappy1500.png?format=1500w" style="width: 45px; height: 45px;" alt="">
+    <a routerLink="/">
+        <img src="https://static1.squarespace.com/static/528252b7e4b00150d03a4848/59a2354eebbd1a0623e0cefe/59a2359f6a49631dd5192339/1503802789674/RickAndMorty_RickHappy1500.png?format=1500w" style="width: 50px; height: 50px;" alt="">
+        <!--<img src="https://i.imgur.com/NV74GPi.png" style="width: 66px; height: 66px;" alt="">-->
+    </a>
     <span class="spacer"></span>
-    <label>The Rick Shop</label>
+    <ul>
+        <li>
+            <a mat-button routerLink="/create" routerLinkActive="mat-accent">New Product</a>
+        </li>
+    </ul>
 </mat-toolbar>
