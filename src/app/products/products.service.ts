@@ -37,6 +37,10 @@ export class ProductsService {
     return this.productsUpdated.asObservable();
   }
 
+  getProduct(id: string) {
+     return this.http.get<{_id: string, title: string, price: number, description: string}>('http://localhost:3000/api/products/' + id);
+  }
+
   addProduct(title: string, price: number, description: string) {
     const product: Product = {
       id: null,
@@ -54,6 +58,18 @@ export class ProductsService {
       });
   }
 
+  updateProduct(id: string, title: string, price: number, description: string) {
+    const product: Product = { id: id, title: title, price: price, description: description };
+    this.http.put('http://localhost:3000/api/products/' + id, product)
+    .subscribe(response => {
+      const updatedProducts = [...this.products];
+      const oldProductIndex = updatedProducts.findIndex(p => p.id === product.id);
+      updatedProducts[oldProductIndex] = product;
+      this.products = updatedProducts;
+      this.productsUpdated.next([...this.products]);
+    });
+  }
+
   deleteProduct(productId: string) {
     this.http.delete('http://localhost:3000/api/products/' + productId)
     .subscribe(() => {
@@ -62,5 +78,6 @@ export class ProductsService {
       this.productsUpdated.next([...this.products]);
     });
   }
+
 
 }
