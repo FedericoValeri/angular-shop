@@ -1,21 +1,21 @@
 <mat-card>
-    <form (submit)="onSaveProduct(productForm)" #productForm="ngForm">
+    <form [formGroup]="form" (submit)="onSaveProduct()">
         <div>
             <button mat-stroked-button type="button" (click)="filePicker.click()">Seleziona immagine</button>
             <input type="file" #filePicker>
         </div>
         <mat-form-field>
-            <input matInput type="text" name="title" [ngModel]="product?.title" required placeholder="Nome prodotto" #title="ngModel">
-            <mat-error *ngIf="title.invalid">Inserisci il nome del prodotto!</mat-error>
+            <input matInput type="text" formControlName="title" placeholder="Nome prodotto">
+            <mat-error *ngIf="form.get('title').invalid">Inserisci il nome del prodotto!</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput type="number" name="price" required [ngModel]="product?.price" placeholder="Prezzo prodotto" class="priceInput" #price="ngModel">
-            <mat-error *ngIf="price.invalid">Inserisci il prezzo del prodotto!</mat-error>
+            <input matInput type="number" formControlName="price" placeholder="Prezzo prodotto" class="priceInput">
+            <mat-error *ngIf="form.get('price').invalid">Inserisci il prezzo del prodotto!</mat-error>
             <span matPrefix>€&nbsp;</span>
         </mat-form-field>
         <mat-form-field>
-            <textarea matInput rows="4" name="description" required [ngModel]="product?.description" placeholder="Descrizione prodotto" #description="ngModel"></textarea>
-            <mat-error *ngIf="description.invalid">Inserisci la descrizione del prodotto!</mat-error>
+            <textarea matInput rows="4" formControlName="description" placeholder="Descrizione prodotto"></textarea>
+            <mat-error *ngIf="form.get('description').invalid">Inserisci la descrizione del prodotto!</mat-error>
         </mat-form-field>
         <button mat-raised-button color="accent" type="submit">Crea Prodotto</button>
     </form>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
 import { ProductsService } from '../products.service';
@@ -14,6 +14,7 @@ export class ProductCreateComponent implements OnInit {
   enteredTitle = '';
   enteredDescription = '';
   product: Product;
+  form: FormGroup;
   private mode = 'create';
   private productId: string;
 
@@ -23,6 +24,11 @@ export class ProductCreateComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.form = new FormGroup({
+      'title': new FormControl(null, {validators: [Validators.required]}),
+      'price': new FormControl(null, {validators: [Validators.required]}),
+      'description': new FormControl(null, {validators: [Validators.required]})
+    });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('productId')) {
         this.mode = 'edit';
@@ -35,6 +41,11 @@ export class ProductCreateComponent implements OnInit {
             price: productData.price,
             description: productData.description
           };
+          this.form.setValue({
+            'title': this.product.title,
+            'price': this.product.price,
+            'description': this.product.description
+          });
         });
       } else {
         this.mode = 'create';
@@ -43,24 +54,24 @@ export class ProductCreateComponent implements OnInit {
     });
   }
 
-  onSaveProduct(form: NgForm) {
-    if (form.invalid) {
+  onSaveProduct() {
+    if (this.form.invalid) {
       return;
     }
     if (this.mode === 'create') {
       this.productsService.addProduct(
-        form.value.title,
-        form.value.price,
-        form.value.description
+        this.form.value.title,
+        this.form.value.price,
+        this.form.value.description
       );
     } else {
       this.productsService.updateProduct(
         this.productId,
-        form.value.title,
-        form.value.price,
-        form.value.description
+        this.form.value.title,
+        this.form.value.price,
+        this.form.value.description
       );
     }
-    form.resetForm();
+    this.form.reset();
   }
 }
