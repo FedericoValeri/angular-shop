@@ -1,5 +1,9 @@
 <mat-card>
     <form (submit)="onSaveProduct(productForm)" #productForm="ngForm">
+        <div>
+            <button mat-stroked-button type="button" (click)="filePicker.click()">Seleziona immagine</button>
+            <input type="file" #filePicker>
+        </div>
         <mat-form-field>
             <input matInput type="text" name="title" [ngModel]="product?.title" required placeholder="Nome prodotto" #title="ngModel">
             <mat-error *ngIf="title.invalid">Inserisci il nome del prodotto!</mat-error>
