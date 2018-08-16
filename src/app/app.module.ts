@@ -9,6 +9,7 @@ import {
   MatCardModule,
   MatButtonModule,
   MatToolbarModule,
+  MatGridListModule,
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
@@ -33,6 +34,7 @@ import { ProductListComponent } from './products/product-list/product-list.compo
     MatCardModule,
     MatButtonModule,
     MatToolbarModule,
+    MatGridListModule,
     HttpClientModule
   ],
   providers: [],

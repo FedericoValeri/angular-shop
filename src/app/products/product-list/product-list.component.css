@@ -2,6 +2,10 @@ example-card {
     max-width: 400px;
 }
 
+.example-card {
+    max-width: 400px;
+}
+
 .example-header-image {
     background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
     background-size: cover;
@@ -14,4 +18,11 @@ example-card {
 
 .info-text {
     text-align: center;
+}
+
+
+/*----*/
+
+mat-grid-tile {
+    background: rgb(230, 184, 173);
 }

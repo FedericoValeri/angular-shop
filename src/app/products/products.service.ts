@@ -23,7 +23,8 @@ export class ProductsService {
            title: product.title,
            price: product.price,
            description: product.description,
-           id: product._id
+           id: product._id,
+           imagePath: product.imagePath
          };
        });
       }))
@@ -38,28 +39,38 @@ export class ProductsService {
   }
 
   getProduct(id: string) {
-     return this.http.get<{_id: string, title: string, price: number, description: string}>('http://localhost:3000/api/products/' + id);
+     return this.http.get<{_id: string, title: string, price: string, description: string}>('http://localhost:3000/api/products/' + id);
   }
 
-  addProduct(title: string, price: number, description: string) {
-    const product: Product = {
-      id: null,
-      title: title,
-      price: price,
-      description: description
-    };
+  addProduct(title: string, price: string, description: string, image: File) {
+    const productData = new FormData();
+    productData.append('title', title);
+    productData.append('price', price);
+    productData.append('description', description);
+    productData.append('image', image, title);
     this.http
-      .post<{ message: string, productId: string }>('http://localhost:3000/api/products', product)
+      .post<{ message: string, product: Product }>('http://localhost:3000/api/products', productData)
       .subscribe(responseData => {
-        const id = responseData.productId;
-        product.id = id;
+        const product: Product = {
+          id: responseData.product.id,
+          title: title,
+          price: price,
+          description: description,
+          imagePath: responseData.product.imagePath
+        };
         this.products.push(product);
         this.productsUpdated.next([...this.products]);
       });
   }
 
-  updateProduct(id: string, title: string, price: number, description: string) {
-    const product: Product = { id: id, title: title, price: price, description: description };
+  updateProduct(id: string, title: string, price: string, description: string) {
+    const product: Product = {
+      id: id,
+      title: title,
+      price: price,
+      description: description,
+      imagePath: null
+    };
     this.http.put('http://localhost:3000/api/products/' + id, product)
     .subscribe(response => {
       const updatedProducts = [...this.products];

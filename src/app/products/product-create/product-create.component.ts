@@ -16,7 +16,7 @@ export class ProductCreateComponent implements OnInit {
   enteredDescription = '';
   product: Product;
   form: FormGroup;
-  imagePreview: string;
+  imagePreview: any;
   private mode = 'create';
   private productId: string;
 
@@ -42,7 +42,8 @@ export class ProductCreateComponent implements OnInit {
             id: productData._id,
             title: productData.title,
             price: productData.price,
-            description: productData.description
+            description: productData.description,
+            imagePath: null
           };
           this.form.setValue({
             'title': this.product.title,
@@ -69,14 +70,15 @@ export class ProductCreateComponent implements OnInit {
   }
 
   onSaveProduct() {
-    if (this.form.invalid) {
+    /* if (this.form.invalid) {
       return;
-    }
+    } */
     if (this.mode === 'create') {
       this.productsService.addProduct(
         this.form.value.title,
         this.form.value.price,
-        this.form.value.description
+        this.form.value.description,
+        this.form.value.image
       );
     } else {
       this.productsService.updateProduct(
