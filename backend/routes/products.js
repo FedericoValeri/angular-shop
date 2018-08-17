@@ -49,12 +49,18 @@ router.post('', multer({ storage: storage }).single("image"), (req, res, next) =
     });
 });
 
-router.put('/:id', (req, res, next) => {
+router.put('/:id', multer({ storage: storage }).single("image"), (req, res, next) => {
+    let imagePath = req.body.imagePath;
+    if (req.file) {
+        const url = req.protocol + '://' + req.get("host");
+        imagePath = url + "/images/" + req.file.filename;
+    }
     const product = new Product({
         _id: req.body.id,
         title: req.body.title,
         price: req.body.price,
-        description: req.body.description
+        description: req.body.description,
+        imagePath: imagePath
     });
     Product.updateOne({
             _id: req.params.id

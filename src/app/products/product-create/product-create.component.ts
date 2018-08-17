@@ -43,12 +43,13 @@ export class ProductCreateComponent implements OnInit {
             title: productData.title,
             price: productData.price,
             description: productData.description,
-            imagePath: null
+            imagePath: productData.imagePath
           };
           this.form.setValue({
             'title': this.product.title,
             'price': this.product.price,
-            'description': this.product.description
+            'description': this.product.description,
+            'image': this.product.imagePath
           });
         });
       } else {
@@ -70,9 +71,9 @@ export class ProductCreateComponent implements OnInit {
   }
 
   onSaveProduct() {
-    /* if (this.form.invalid) {
+    if (this.form.invalid) {
       return;
-    } */
+    }
     if (this.mode === 'create') {
       this.productsService.addProduct(
         this.form.value.title,
@@ -85,7 +86,8 @@ export class ProductCreateComponent implements OnInit {
         this.productId,
         this.form.value.title,
         this.form.value.price,
-        this.form.value.description
+        this.form.value.description,
+        this.form.value.image
       );
     }
     this.form.reset();

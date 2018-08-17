@@ -39,7 +39,9 @@ export class ProductsService {
   }
 
   getProduct(id: string) {
-     return this.http.get<{_id: string, title: string, price: string, description: string}>('http://localhost:3000/api/products/' + id);
+     return this.http.get<{_id: string, title: string, price: string, description: string, imagePath: string}>(
+       'http://localhost:3000/api/products/' + id
+      );
   }
 
   addProduct(title: string, price: string, description: string, image: File) {
@@ -63,18 +65,35 @@ export class ProductsService {
       });
   }
 
-  updateProduct(id: string, title: string, price: string, description: string) {
-    const product: Product = {
-      id: id,
-      title: title,
-      price: price,
-      description: description,
-      imagePath: null
-    };
-    this.http.put('http://localhost:3000/api/products/' + id, product)
+  updateProduct(id: string, title: string, price: string, description: string, image: File | string) {
+    let productData: Product | FormData;
+    if (typeof(image) === 'object') {
+      productData = new FormData();
+      productData.append('id', id);
+      productData.append('title', title);
+      productData.append('price', price);
+      productData.append('description', description);
+      productData.append('image', image, title);
+    } else {
+      productData = {
+         id: id,
+         title: title,
+         price: price,
+         description: description,
+         imagePath: image
+      };
+    }
+    this.http.put('http://localhost:3000/api/products/' + id, productData)
     .subscribe(response => {
       const updatedProducts = [...this.products];
-      const oldProductIndex = updatedProducts.findIndex(p => p.id === product.id);
+      const oldProductIndex = updatedProducts.findIndex(p => p.id === id);
+      const product: Product = {
+        id: id,
+        title: title,
+        price: price,
+        description: description,
+        imagePath: ''
+      };
       updatedProducts[oldProductIndex] = product;
       this.products = updatedProducts;
       this.productsUpdated.next([...this.products]);
