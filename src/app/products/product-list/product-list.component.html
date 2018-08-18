@@ -1,4 +1,5 @@
-<div class="container-fluid" *ngIf="products.length > 0">
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<div class="container-fluid" *ngIf="products.length > 0 && !isLoading">
     <div class="row">
         <div class="col-md-4 col-sm-6" *ngFor="let product of products">
             <mat-card class="example-card">
@@ -23,4 +24,4 @@
 </div>
 
 
-<p class="info-text mat-body-1" *ngIf="products.length <= 0">Nessun prodotto presente nel negozio di Rick</p>
+<p class="info-text mat-body-1" *ngIf="products.length <= 0 && !isLoading">Nessun prodotto presente nel negozio di Rick</p>

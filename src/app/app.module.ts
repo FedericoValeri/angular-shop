@@ -9,7 +9,7 @@ import {
   MatCardModule,
   MatButtonModule,
   MatToolbarModule,
-  MatGridListModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
@@ -37,7 +37,7 @@ import { LoginComponent } from './auth/login/login.component';
     MatCardModule,
     MatButtonModule,
     MatToolbarModule,
-    MatGridListModule,
+    MatProgressSpinnerModule,
     HttpClientModule
   ],
   providers: [],

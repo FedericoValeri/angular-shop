@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 import { Product } from './product.model';
 
@@ -10,7 +11,7 @@ export class ProductsService {
   private products: Product[] = [];
   private productsUpdated = new Subject<Product[]>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   getProducts() {
     this.http
@@ -62,6 +63,7 @@ export class ProductsService {
         };
         this.products.push(product);
         this.productsUpdated.next([...this.products]);
+        this.router.navigate(['/']);
       });
   }
 
@@ -97,6 +99,7 @@ export class ProductsService {
       updatedProducts[oldProductIndex] = product;
       this.products = updatedProducts;
       this.productsUpdated.next([...this.products]);
+      this.router.navigate(['/']);
     });
   }
 
