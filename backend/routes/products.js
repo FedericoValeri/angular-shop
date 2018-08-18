@@ -1,7 +1,8 @@
 const express = require("express");
 const multer = require("multer");
 
-const Product = require('../models/product');
+const Product = require("../models/product");
+const checkAuth = require("../middleware/check-auth");
 
 const router = express.Router();
 
@@ -30,7 +31,7 @@ const storage = multer.diskStorage({
     }
 });
 
-router.post('', multer({ storage: storage }).single("image"), (req, res, next) => {
+router.post("", checkAuth, multer({ storage: storage }).single("image"), (req, res, next) => {
     const url = req.protocol + '://' + req.get("host");
     const product = new Product({
         title: req.body.title,
@@ -49,7 +50,7 @@ router.post('', multer({ storage: storage }).single("image"), (req, res, next) =
     });
 });
 
-router.put('/:id', multer({ storage: storage }).single("image"), (req, res, next) => {
+router.put("/:id", checkAuth, multer({ storage: storage }).single("image"), (req, res, next) => {
     let imagePath = req.body.imagePath;
     if (req.file) {
         const url = req.protocol + '://' + req.get("host");
@@ -72,7 +73,7 @@ router.put('/:id', multer({ storage: storage }).single("image"), (req, res, next
         });
 });
 
-router.get('', (req, res, next) => {
+router.get("", (req, res, next) => {
     Product.find()
         .then((documents) => {
             res.status(200).json({
@@ -82,7 +83,7 @@ router.get('', (req, res, next) => {
         });
 });
 
-router.get('/:id', (req, res, next) => {
+router.get("/:id", (req, res, next) => {
     Product.findById(req.params.id)
         .then(product => {
             if (product) {
@@ -95,7 +96,7 @@ router.get('/:id', (req, res, next) => {
         });
 });
 
-router.delete('/:id', (req, res, next) => {
+router.delete("/:id", checkAuth, (req, res, next) => {
     Product.deleteOne({
         _id: req.params.id
     }).then(result => {
