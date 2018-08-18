@@ -17,6 +17,7 @@ import { ProductCreateComponent } from './products/product-create/product-create
 import { HeaderComponent } from './header/header.component';
 import { ProductListComponent } from './products/product-list/product-list.component';
 import { LoginComponent } from './auth/login/login.component';
+import { SignupComponent } from './auth/signup/signup.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { LoginComponent } from './auth/login/login.component';
     HeaderComponent,
     ProductCreateComponent,
     ProductListComponent,
-    LoginComponent
+    LoginComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
