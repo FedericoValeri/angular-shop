@@ -1,19 +1,23 @@
 <mat-toolbar color="primary">
     <a routerLink="/">
-        <!--         <img src="https://static1.squarespace.com/static/528252b7e4b00150d03a4848/59a2354eebbd1a0623e0cefe/59a2359f6a49631dd5192339/1503802789674/RickAndMorty_RickHappy1500.png?format=1500w" style="width: 50px; height: 50px;" alt="">-->
+        <!-- <img src="https://static1.squarespace.com/static/528252b7e4b00150d03a4848/59a2354eebbd1a0623e0cefe/59a2359f6a49631dd5192339/1503802789674/RickAndMorty_RickHappy1500.png?format=1500w" style="width: 50px; height: 50px;" alt="">-->
         <img src="http://inazumasensei.altervista.org/wp-content/uploads/2017/05/Rick_and_Morty_logo.png" alt="" style="width: 150px; height: 50px;">
         <!-- <img src="https://static1.squarespace.com/static/528252b7e4b00150d03a4848/59a2354eebbd1a0623e0cefe/59a235a0914e6bc2a73ccf5d/1503802789492/RickAndMorty_ScaredMorty1500.png?format=300w" alt="" style="width: 50px; height: 50px;"> -->
     </a>
+    <span *ngIf="userIsAuthenticated && userIsAdmin">Admin</span>
     <span class="spacer"></span>
     <ul>
-        <li>
+        <li *ngIf="userIsAuthenticated && userIsAdmin">
             <a mat-button routerLink="/create" routerLinkActive="mat-accent">New Product</a>
         </li>
-        <li>
+        <li *ngIf="!userIsAuthenticated">
             <a mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a>
         </li>
-        <li>
+        <li *ngIf="!userIsAuthenticated">
             <a mat-button routerLink="/signup" routerLinkActive="mat-accent">Signup</a>
+        </li>
+        <li *ngIf="userIsAuthenticated">
+            <button mat-button>Logout</button>
         </li>
     </ul>
 </mat-toolbar>
