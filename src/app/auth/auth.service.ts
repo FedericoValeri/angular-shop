@@ -12,7 +12,7 @@ export class AuthService {
   private token: string;
   private tokenTimer: any;
   private authStatusListener = new Subject<boolean>();
-  private authAsAdminStatusListener = new Subject<boolean>();
+  private privilegeStatusListener = new Subject<string>();
 
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -34,7 +34,7 @@ export class AuthService {
   }
 
  getAuthAsAdminStatusListener() {
-    return this.authAsAdminStatusListener.asObservable();
+    return this.privilegeStatusListener.asObservable();
   }
 
   createUser(email: string, password: string) {
@@ -68,11 +68,12 @@ export class AuthService {
           this.setAuthTimer(expiresInDuration);
           this.isAuthenticated = true;
           this.authStatusListener.next(true);
+          this.privilegeStatusListener.next('user');
           const now = new Date();
           const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
           this.saveAuthData(token, expirationDate, privilege);
           this.router.navigate(['/']);
-          console.log('Primo if - dopo il login, privilege è: ' + this.privilege);
+          console.log('Dopo il login, privilege è: ' + this.privilege);
         }
 
         if (token && privilege === 'admin') {
@@ -80,12 +81,12 @@ export class AuthService {
           this.setAuthTimer(expiresInDuration);
           this.isAuthenticated = true;
           this.authStatusListener.next(true);
-          this.authAsAdminStatusListener.next(true);
+          this.privilegeStatusListener.next('admin');
           const now = new Date();
           const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
           this.saveAuthData(token, expirationDate, privilege);
           this.router.navigate(['/']);
-          console.log('Secondo if - Dopo il login, privilege è: ' + this.privilege);
+          console.log('Dopo il login, privilege è: ' + this.privilege);
         }
       });
   }
@@ -93,6 +94,7 @@ export class AuthService {
   autoAuthUser() {
     const authInformation = this.getAuthData();
     if (!authInformation) {
+      console.log('Non sei loggato, privilege is ' + this.privilege);
       return;
     }
     const now = new Date();
@@ -105,7 +107,8 @@ export class AuthService {
         this.isAuthenticated = true;
         this.setAuthTimer(expiresIn / 1000);
         this.authStatusListener.next(true);
-        console.log('Privilege: ' + authInformation.privilege);
+        this.privilegeStatusListener.next('user');
+        console.log('autoAuth - Privilege: ' + authInformation.privilege);
       }
       if (privilege === 'admin') {
         this.token = authInformation.token;
@@ -113,8 +116,8 @@ export class AuthService {
         this.isAuthenticated = true;
         this.setAuthTimer(expiresIn / 1000);
         this.authStatusListener.next(true);
-        this.authAsAdminStatusListener.next(true);
-        console.log('Privilege: ' + authInformation.privilege);
+        this.privilegeStatusListener.next('admin');
+        console.log('autoAuth - Privilege: ' + authInformation.privilege);
       }
     }
   }
@@ -123,6 +126,7 @@ export class AuthService {
     this.token = null;
     this.isAuthenticated = false;
     this.authStatusListener.next(false);
+    this.privilegeStatusListener.next(undefined);
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
     this.router.navigate(['/']);

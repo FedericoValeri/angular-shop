@@ -14,9 +14,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
  products: Product[] = [];
  isLoading = false;
  userIsAuthenticated = false;
- userIsAdmin = false;
+ privilege: string;
  private productsSub: Subscription;
  private authStatusSub: Subscription;
+ private privilegeStatusSub: Subscription;
 
 
   constructor(public productsService: ProductsService, private authService: AuthService) {}
@@ -36,7 +37,18 @@ export class ProductListComponent implements OnInit, OnDestroy {
     .getAuthStatusListener()
     .subscribe(isAuthenticated => {
       this.userIsAuthenticated = isAuthenticated;
+      console.log('isAuthenticated per product list: ' + this.userIsAuthenticated);
+
     });
+
+    this.privilege = this.authService.userKind();
+    this.privilegeStatusSub = this.authService
+    .getAuthAsAdminStatusListener()
+    .subscribe(isAdmin => {
+     this.privilege = isAdmin;
+      console.log('Privilege per product list: ' + this.privilege);
+    });
+
   }
 
   onDelete(productId: string) {
@@ -46,6 +58,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.productsSub.unsubscribe();
     this.authStatusSub.unsubscribe();
+    this.privilegeStatusSub.unsubscribe();
   }
 
 }

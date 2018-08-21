@@ -12,8 +12,8 @@ import { AuthService } from '../auth/auth.service';
 export class HeaderComponent implements OnInit, OnDestroy {
   userIsAuthenticated = false;
   private authListenerSubs: Subscription;
-  privilege: any;
-  private authAdminListenerSubs: Subscription;
+  privilege: string;
+  private privilegeListenerSubs: Subscription;
 
   constructor(private authService: AuthService) {}
 
@@ -23,12 +23,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     .getAuthStatusListener()
     .subscribe(isAuthenticated => {
       this.userIsAuthenticated = isAuthenticated;
+      console.log('isAuthenticated per header: ' + this.userIsAuthenticated);
     });
     this.privilege = this.authService.userKind();
-    this.authAdminListenerSubs = this.authService
+    this.privilegeListenerSubs = this.authService
     .getAuthAsAdminStatusListener()
     .subscribe(isAdmin => {
-      this.privilege = isAdmin;
+        this.privilege = isAdmin;
       console.log('Privilege per header: ' + this.privilege);
     });
 
@@ -40,7 +41,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.authListenerSubs.unsubscribe();
-    this.authAdminListenerSubs.unsubscribe();
+    this.privilegeListenerSubs.unsubscribe();
   }
 
 }

@@ -14,9 +14,9 @@
                     </p>
                 </mat-card-content>
                 <mat-card-actions>
-                    <button *ngIf="!userIsAdmin" mat-raised-button color="accent">Aggiungi al carrello</button>
-                    <a *ngIf="userIsAuthenticated && userIsAdmin" mat-raised-button color="primary" [routerLink]="['/edit', product.id]">MODIFICA</a>
-                    <button *ngIf="userIsAuthenticated && userIsAdmin" mat-raised-button color="warn" (click)="onDelete(product.id)">RIMUOVI</button>
+                    <button *ngIf="privilege === 'user' || privilege === undefined" mat-raised-button color="accent">Aggiungi al carrello</button>
+                    <a *ngIf="userIsAuthenticated && privilege === 'admin'" mat-raised-button color="primary" [routerLink]="['/edit', product.id]">MODIFICA</a>
+                    <button *ngIf="userIsAuthenticated && privilege === 'admin'" mat-raised-button color="warn" (click)="onDelete(product.id)">RIMUOVI</button>
                 </mat-card-actions>
             </mat-card>
         </div>
