@@ -104,12 +104,7 @@ export class ProductsService {
   }
 
   deleteProduct(productId: string) {
-    this.http.delete('http://localhost:3000/api/products/' + productId)
-    .subscribe(() => {
-      const updatedProducts = this.products.filter(product => product.id !== productId);
-      this.products = updatedProducts;
-      this.productsUpdated.next([...this.products]);
-    });
+    return this.http.delete('http://localhost:3000/api/products/' + productId);
   }
 
 

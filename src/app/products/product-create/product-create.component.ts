@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { ProductsService } from '../products.service';
+import { AuthService } from '../../auth/auth.service';
 import { Product } from '../product.model';
 import { mimeType } from './mime-type.validator';
 
@@ -11,7 +13,7 @@ import { mimeType } from './mime-type.validator';
   templateUrl: './product-create.component.html',
   styleUrls: ['./product-create.component.css']
 })
-export class ProductCreateComponent implements OnInit {
+export class ProductCreateComponent implements OnInit, OnDestroy{
   enteredTitle = '';
   enteredDescription = '';
   product: Product;
@@ -20,13 +22,20 @@ export class ProductCreateComponent implements OnInit {
   imagePreview: any;
   private mode = 'create';
   private productId: string;
+  private authStatusSub: Subscription;
 
   constructor(
     public productsService: ProductsService,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
+    this.authStatusSub = this.authService
+    .getAuthStatusListener()
+    .subscribe(authStatus => {
+      this.isLoading = false;
+    });
     this.form = new FormGroup({
       title: new FormControl(null, {validators: [Validators.required]}),
       price: new FormControl(null, {validators: [Validators.required]}),
@@ -96,4 +105,9 @@ export class ProductCreateComponent implements OnInit {
     }
     this.form.reset();
   }
+
+  ngOnDestroy() {
+    this.authStatusSub.unsubscribe();
+  }
+
 }

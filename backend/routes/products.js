@@ -31,7 +31,9 @@ const storage = multer.diskStorage({
     }
 });
 
-router.post("", checkAuth, multer({ storage: storage }).single("image"), (req, res, next) => {
+router.post("", checkAuth, multer({
+    storage: storage
+}).single("image"), (req, res, next) => {
     const url = req.protocol + '://' + req.get("host");
     const product = new Product({
         title: req.body.title,
@@ -40,17 +42,24 @@ router.post("", checkAuth, multer({ storage: storage }).single("image"), (req, r
         imagePath: url + "/images/" + req.file.filename
     });
     product.save().then(createdPost => {
-        res.status(201).json({
-            message: 'Post added succesfully',
-            product: {
-                ...createdPost,
-                id: createdPost._id
-            }
+            res.status(201).json({
+                message: 'Post added succesfully',
+                product: {
+                    ...createdPost,
+                    id: createdPost._id
+                }
+            });
+        })
+        .catch(error => {
+            res.status(500).json({
+                message: 'Creating a post failed'
+            });
         });
-    });
 });
 
-router.put("/:id", checkAuth, multer({ storage: storage }).single("image"), (req, res, next) => {
+router.put("/:id", checkAuth, multer({
+    storage: storage
+}).single("image"), (req, res, next) => {
     let imagePath = req.body.imagePath;
     if (req.file) {
         const url = req.protocol + '://' + req.get("host");
@@ -70,6 +79,11 @@ router.put("/:id", checkAuth, multer({ storage: storage }).single("image"), (req
             res.status(200).json({
                 message: "Update successful!"
             });
+        })
+        .catch(error => {
+            res.status(500).json({
+                message: 'Unable to update product!'
+            });
         });
 });
 
@@ -79,6 +93,11 @@ router.get("", (req, res, next) => {
             res.status(200).json({
                 message: 'Products fetched succesfully!',
                 products: documents
+            });
+        })
+        .catch(error => {
+            res.status(500).json({
+                message: 'Fetching products failed!'
             });
         });
 });
@@ -90,21 +109,31 @@ router.get("/:id", (req, res, next) => {
                 res.status(200).json(product);
             } else {
                 res.status(404).json({
-                    message: "product not found!"
+                    message: "Product not found!"
                 });
             }
-        });
+        })
+        .catch(error => {
+            res.status(500).json({
+                message: 'Fetching product failed!'
+            });
+        });;
 });
 
 router.delete("/:id", checkAuth, (req, res, next) => {
     Product.deleteOne({
-        _id: req.params.id
-    }).then(result => {
-        console.log(result);
-        res.status(200).json({
-            message: 'Product deleted!'
-        });
-    });
+            _id: req.params.id
+        }).then(result => {
+            console.log(result);
+            res.status(200).json({
+                message: 'Product deleted!'
+            });
+        })
+        .catch(error => {
+            res.status(500).json({
+                message: 'Deleting product failed!'
+            });
+        });;
 });
 
 module.exports = router;

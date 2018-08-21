@@ -52,7 +52,13 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   onDelete(productId: string) {
-    this.productsService.deleteProduct(productId);
+    this.isLoading = true;
+    this.productsService.deleteProduct(productId)
+    .subscribe(() => {
+      this.productsService.getProducts();
+    }, () => {
+      this.isLoading = false;
+    });
   }
 
   ngOnDestroy() {
