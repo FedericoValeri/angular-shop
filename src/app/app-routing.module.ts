@@ -13,8 +13,8 @@ import { AuthAdminGuard } from './auth/auth-admin.guard';
 
 const routes: Routes = [
   { path: '', component: ProductListComponent },
-  { path: 'create', component: ProductCreateComponent, canActivate: [AuthUserGuard]},
-  { path: 'edit/:productId', component: ProductCreateComponent, canActivate: [AuthUserGuard]},
+  { path: 'create', component: ProductCreateComponent, canActivate: [AuthAdminGuard]},
+  { path: 'edit/:productId', component: ProductCreateComponent, canActivate: [AuthAdminGuard]},
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent }
 ];

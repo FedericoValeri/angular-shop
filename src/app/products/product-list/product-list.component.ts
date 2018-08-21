@@ -30,13 +30,12 @@ export class ProductListComponent implements OnInit, OnDestroy {
       this.isLoading = false;
        this.products = products;
     });
-    this.userIsAdmin = this.authService.userIsAdmin();
+
     this.userIsAuthenticated = this.authService.getIsAuth();
     this.authStatusSub = this.authService
     .getAuthStatusListener()
     .subscribe(isAuthenticated => {
       this.userIsAuthenticated = isAuthenticated;
-
     });
   }
 

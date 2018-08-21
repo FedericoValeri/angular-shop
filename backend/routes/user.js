@@ -48,7 +48,7 @@ router.post("/login", (req, res, next) => {
                     message: 'Auth failed'
                 });
             }
-            const isAdmin = fetchedUser.isAdmin;
+            const privilege = fetchedUser.privilege;
             const token = jwt.sign({
                 email: fetchedUser.email,
                 userId: fetchedUser._id
@@ -59,7 +59,7 @@ router.post("/login", (req, res, next) => {
                 message: 'User logged!',
                 token: token,
                 expiresIn: 3600,
-                isAdmin: isAdmin
+                privilege: privilege
             });
         })
         .catch(err => {

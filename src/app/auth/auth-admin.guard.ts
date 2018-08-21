@@ -18,15 +18,12 @@ export class AuthAdminGuard implements CanActivate {
     state: RouterStateSnapshot
   ): boolean | Observable<boolean> | Promise<boolean> {
     const authAsUser = this.authService.getIsAuth();
-    const authAsAdmin = this.authService.userIsAdmin();
-    console.log(authAsUser);
-    if (authAsUser) {
-      this.router.navigate(['/']);
-    }
-    if (!authAsAdmin && !authAsUser) {
-      console.log('I am here!');
+    const privilege = this.authService.userKind();
+    console.log('Loggato come utente: ' + authAsUser);
+    console.log('Privilege: ' + privilege);
+    if (privilege === 'user' || !authAsUser) {
       this.router.navigate(['/login']);
     }
-    return authAsAdmin;
+    return true;
   }
 }
