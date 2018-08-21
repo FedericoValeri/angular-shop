@@ -44,8 +44,10 @@ export class AuthService {
     };
     this.http
       .post('http://localhost:3000/api/user/signup', authData)
-      .subscribe(response => {
-        console.log(response);
+      .subscribe(() => {
+        this.router.navigate(['/']);
+      }, error => {
+        this.authStatusListener.next(false);
       });
   }
 
@@ -88,6 +90,8 @@ export class AuthService {
           this.router.navigate(['/']);
           console.log('Dopo il login, privilege è: ' + this.privilege);
         }
+      }, error => {
+        this.authStatusListener.next(false);
       });
   }
 
